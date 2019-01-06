@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
- 
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -30,10 +30,12 @@ let routes = [
         BrowserModule,
         FormsModule,
         HttpModule,
+        HttpClientModule,
         RouterModule,
         RouterModule.forRoot(routes)
     ],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    exports:[RegisterComponent]
 })
 export class AppModule { }

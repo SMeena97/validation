@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
-import { Http, Headers, RequestOptions } from "@angular/http";
 import { Router } from "@angular/router";
-
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import "rxjs/Rx";
 
-
+interface DataResponse{
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+    id: number;
+}
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -14,24 +19,34 @@ import "rxjs/Rx";
 export class LoginComponent {
  
     public input: any;
- 
-    constructor(private http: Http, private router: Router) {
+    constructor(private http: HttpClient) {
         this.input = {
             "email": "",
             "password": ""
         };
     }
+
+    
+ public verification(){
+     var tempArray:DataResponse[]=[];
+     this.http.get('http://localhost:3000/account').subscribe((data:DataResponse[])=>{
+         tempArray=data
+        }); 
+   var j;
+   j=0;
+       for(var i=0;i<tempArray.length;i++){
+       if(this.input.email===tempArray[i].email && this.input.password===tempArray[i].password){
+       alert("successfully loggedIn");
+      break;
+       }
+       j++;
+    }
+         if(j==i)
+         alert("Invalid data");
+         
+     }
  
-    public login() {
-        if(this.input.email && this.input.password) {
-            let headers = new Headers({ "content-type": "application/json" });
-            let options = new RequestOptions({ headers: headers });
-            this.http.post("http://localhost:3000/login", JSON.stringify(this.input), options)
-                .map(result => result.json())
-                .subscribe(result => {
-                    this.router.navigate(["/home"], { "queryParams": result });
-                });
-        }
+   
     }
  
-}
+
